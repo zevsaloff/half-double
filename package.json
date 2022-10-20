@@ -20,8 +20,8 @@
     "xstate": "^4.33.6"
   },
   "scripts": {
-    "start" : "node src/serve.js",
-    "run": "react-scripts start",
+    "run" : "node src/serve.js",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
