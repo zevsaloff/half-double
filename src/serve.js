@@ -8,7 +8,7 @@ const port = 3000
 app.use(morgan('tiny'))
 
 // app.use(express.static('public/'));
-console.log(__dirname + '/public/')
+console.log(__dirname + '/build/')
 app.use(express.static(__dirname + '/public'));
 
 app.get('/', (req, res) => {
