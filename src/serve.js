@@ -9,9 +9,10 @@ app.use(morgan('tiny'))
 
 // app.use(express.static('public/'));
 console.log(__dirname + '/build/')
-app.use(express.static(__dirname + '/public'));
+app.use(express.static(__dirname + '/../build'));
 
 app.get('/', (req, res) => {
+
     // res.send('Hello World!')
     // console.log(req)
   })

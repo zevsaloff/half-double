@@ -6,9 +6,13 @@ import Game from './Components/Game';
 import { useMachine,useActor} from '@xstate/react';
 import {applicationStateInterpreter} from './state';
 import { useEffect } from 'react';
+import { keyboard } from '@testing-library/user-event/dist/keyboard';
 
 const App = () => {
   const [state,send] = useActor(applicationStateInterpreter)
+  document.addEventListener(onkeydown,(e)=>{
+    console.log(e)
+  })
   return (
     <div 
     className="App"
