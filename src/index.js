@@ -8,6 +8,9 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 document.addEventListener("keydown",(e)=>{
   console.log(e)
 })
+document.addEventListener("touchstart",(e)=>{
+  console.log(e)
+})
 root.render(
   // removed react.strictmode wrapper so that I components dont render twice
   // <React.StrictMode>
