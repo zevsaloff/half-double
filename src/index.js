@@ -5,7 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-document.addEventListener(KeyboardEvent,(e)=>{
+document.addEventListener("keydown",(e)=>{
   console.log(e)
 })
 root.render(
