@@ -5,6 +5,9 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+document.addEventListener(onkeydown,(e)=>{
+  console.log(e)
+})
 root.render(
   // removed react.strictmode wrapper so that I components dont render twice
   // <React.StrictMode>

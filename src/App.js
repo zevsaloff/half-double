@@ -10,9 +10,7 @@ import { keyboard } from '@testing-library/user-event/dist/keyboard';
 
 const App = () => {
   const [state,send] = useActor(applicationStateInterpreter)
-  document.addEventListener(onkeydown,(e)=>{
-    console.log(e)
-  })
+ 
   return (
     <div 
     className="App"
