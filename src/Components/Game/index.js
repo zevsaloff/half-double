@@ -15,18 +15,20 @@ const Game = () => {
 
     useEffect(()=>{
         const remoteListener = (e)=>{
-            // options: starting, running, paused, ended
+            // game state values: starting, running, paused, ended
+            // e.key === 'ArrowLeft','ArrowRight','MediaPlayPause'
             console.log(gameState.value)
             if(gameState.value === 'running'||'paused'){
-                // respond to right, left and play/pause
                 gameStateSend({type:e.key})
                 e.preventDefault()
             }
+            if (gameState.value === 'ended'){
+                document.removeEventListener('keydown',remoteListener)
+            }
 
-            // e.key === 'ArrowLeft','ArrowRight','MediaPlayPause'
         }
         document.addEventListener('keydown',remoteListener)
-        return () =>{
+        return () => {
             document.removeEventListener('keydown',remoteListener)
         }
     },[gameState.value])
