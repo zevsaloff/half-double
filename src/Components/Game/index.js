@@ -18,10 +18,11 @@ const Game = () => {
             // game state values: starting, running, paused, ended
             // e.key === 'ArrowLeft','ArrowRight','MediaPlayPause'
             console.log(gameState.value)
+            e.preventDefault()
             if(gameState.value === 'running'){
                 gameStateSend({type:e.key})
             }
-            if (gameState.value === 'ended'||'paused'){
+            if (gameState.value === 'ended'){
                 document.removeEventListener('keydown',remoteListener)
             }
 
