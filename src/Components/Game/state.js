@@ -7,9 +7,6 @@ const getNewTargetNumber = (context)=>{
     let numbers = [1,2,4,8,16,32,64,128,256,512,1024,2048,4096,8192,16384,32768,65536,131072]
     numbers.splice(context.currentNumber,1)
     const randomNumber = numbers[Math.floor(Math.random() * numbers.length)]
-
-    console.log('logging randomNumber')
-    console.log(randomNumber)
     return randomNumber
 }
 
@@ -77,7 +74,6 @@ const gameMachine = createMachine({
                 id:'game',
                 src: (context) => (callback, onrecieve) => {
                     onrecieve((event)=>{
-                        console.log(event)
                         // if(event.type === 'RIGHT'){}
                         // if(event.type === 'LEFT'){}
                     })
@@ -108,7 +104,7 @@ const gameMachine = createMachine({
                 },
                 ENDED:{
                     target:'ended',
-                    actions:(context,event)=>{console.log('hello from ended event')}
+                    actions:(context,event)=>{}
                 },
                 // update change events to change score and target number as needed
                 // reassign target number when new current number matches
