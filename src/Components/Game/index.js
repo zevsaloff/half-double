@@ -16,6 +16,7 @@ const Game = () => {
     useEffect(()=>{
         const remoteListener = (e)=>{
             // options: starting, running, paused, ended
+            console.log(gameState.value)
             if(gameState.value === 'running'||'paused'){
                 // respond to right, left and play/pause
                 gameStateSend({type:e.key})
