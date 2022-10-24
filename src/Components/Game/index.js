@@ -36,7 +36,6 @@ const Game = () => {
     // persist high score with window.localStorage 
     // (window.localstorage.setItem('highScore',highScore),window.localstorage.getItem('highScore'))
     useEffect(()=>{
-        console.log(gameState.context)
         if(gameState.context.targetNumber===gameState.context.currentNumber)gameStateSend('MATCH')
       
     },[gameState])
