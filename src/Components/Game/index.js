@@ -20,7 +20,7 @@ const Game = () => {
             console.log(gameState.value)
             if(gameState.value === 'running'||'paused'){
                 gameStateSend({type:e.key})
-                e.preventDefault()
+                // e.preventDefault()
             }
             if (gameState.value === 'ended'){
                 document.removeEventListener('keydown',remoteListener)
