@@ -13,6 +13,23 @@ const Game = () => {
     const [gameState,gameStateSend] = useMachine(gameMachine)
     // const [gameState,gameStateSend] = useMachine(gameMachine)
 
+    useEffect(()=>{
+        const remoteListener = (e)=>{
+            // options: starting, running, paused, ended
+            if(gameState.value === 'running'||'paused'){
+                // respond to right, left and play/pause
+                gameStateSend({type:e.key})
+                e.preventDefault()
+            }
+
+            // e.key === 'ArrowLeft','ArrowRight','MediaPlayPause'
+        }
+        document.addEventListener('keydown',remoteListener)
+        return () =>{
+            document.removeEventListener('keydown',remoteListener)
+        }
+    },[gameState.value])
+
     window.actor = gameState
     let thing = "thing"
     // persist high score with window.localStorage 
@@ -99,7 +116,7 @@ const Game = () => {
                             text="<"
                             size={{width:"5vmax",height:'3vmax'}}
                             color={colors.sg}
-                            handleClick={()=>gameStateSend({type:'LEFT'})}
+                            handleClick={()=>gameStateSend({type:'ArrowLeft'})}
                         >
                         </Button>
 
@@ -108,7 +125,7 @@ const Game = () => {
                             text=">"
                             size={{width:"5vmax",height:'3vmax'}}
                             color={colors.sg}
-                            handleClick={()=>gameStateSend({type:'RIGHT'})}
+                            handleClick={()=>gameStateSend({type:'ArrowRight'})}
                         >
                         </Button>
                         <Button
@@ -116,7 +133,7 @@ const Game = () => {
                             text="Pause"
                             size={{width:"min-content",height:'3vmax'}}
                             color={colors.sg}
-                            handleClick={()=>gameStateSend({type:'PAUSE'})}
+                            handleClick={()=>gameStateSend({type:'MediaPlayPause'})}
                         >
                         </Button>
                     </div>
@@ -136,7 +153,7 @@ const Game = () => {
                             text="Resume"
                             size={{width:"min-content",height:'3vmax'}}
                             color={colors.sg}
-                            handleClick={()=>gameStateSend({type:'RESUME'})}
+                            handleClick={()=>gameStateSend({type:"MediaPlayPause"})}
                         >
                     </Button>
                     <Button

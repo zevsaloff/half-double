@@ -112,7 +112,7 @@ const gameMachine = createMachine({
                 },
                 // update change events to change score and target number as needed
                 // reassign target number when new current number matches
-                RIGHT:{
+                ArrowRight:{
                     actions:[assign({
                         currentNumber:(context)=>{
                             const newCurrentNumber = context.currentNumber*2
@@ -120,7 +120,7 @@ const gameMachine = createMachine({
                         }
                     })/* ,send({ type: 'RIGHT' }, { to: 'game' }) */]
                 },
-                LEFT:{
+                ArrowLeft:{
                     actions:[assign({
                         currentNumber:(context)=>{
                             const newCurrentNumber = context.currentNumber === 1? 1:context.currentNumber/2
@@ -136,14 +136,14 @@ const gameMachine = createMachine({
                 ]
                 },
                 TIMEOUT:{target:'ended'},
-                PAUSE:{target:'paused'}
+                MediaPlayPause:{target:'paused'}
             }
 
         },
         paused:{
             // actions:send({type:'PAUSE'},{to:'timer'}),
             on:{
-                RESUME:{target:'running'},
+                MediaPlayPause:{target:'running'},
                 EXIT: {target:'exitGame'}
             }
         },

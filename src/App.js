@@ -1,5 +1,5 @@
-import './App.css';
-import './reset.css'
+import './App.scss';
+import './reset.scss'
 import colors from './colors';
 import Menu from './Components/Menu'
 import Game from './Components/Game';
