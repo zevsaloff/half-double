@@ -21,7 +21,7 @@ const Game = () => {
             if(gameState.value === 'running'){
                 gameStateSend({type:e.key})
             }
-            if (gameState.value === 'ended'){
+            if (gameState.value === 'ended'||'paused'){
                 document.removeEventListener('keydown',remoteListener)
             }
 
