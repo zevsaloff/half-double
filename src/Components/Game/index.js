@@ -1,7 +1,7 @@
 import { useMachine,useActor} from '@xstate/react';
 import { useEffect, useState } from 'react';
 import {applicationStateInterpreter} from "../../state";
-import { gameMachine,gameStateInterpreter } from './state';
+import { gameMachine } from './state';
 import Button  from '../button/index'
 import colors from '../../colors';
 
@@ -9,62 +9,57 @@ import colors from '../../colors';
 const Game = () => {
     const [highScore,setHighScore] = useState(window.localStorage.getItem('highScore'))
     const [applicationState,applicationStateSend] = useActor(applicationStateInterpreter)
-    // const [gameState,gameStateSend] = useActor(gameStateInterpreter)
     const [gameState,gameStateSend] = useMachine(gameMachine)
-    // const [gameState,gameStateSend] = useMachine(gameMachine)
+    window.actor = gameState
 
-    useEffect(()=>{
-        const remoteListener = (e)=>{
-            // game state values: starting, running, paused, ended
-            // e.key === 'ArrowLeft','ArrowRight','MediaPlayPause'
-            console.log(gameState.value)
-            if(gameState.value === 'running'){
-                gameStateSend({type:e.key})
-                e.preventDefault()
+    // effects
+    {
+        // Remote event effect
+        useEffect(()=>{
+            const remoteListener = (e)=>{
+                // game state values: starting, running, paused, ended
+                // e.key === 'ArrowLeft','ArrowRight','MediaPlayPause'
+                console.log(gameState.value)
+                if(gameState.value === 'running'||'paused'){
+                    gameStateSend({type:e.key})
+                    if(gameState.value==='running')e.preventDefault()
+                }
+                if (gameState.value === 'ended'){
+                    document.removeEventListener('keydown',remoteListener)
+                }
             }
-            if (gameState.value === 'ended'){
+            document.addEventListener('keydown',remoteListener)
+            return () => {
                 document.removeEventListener('keydown',remoteListener)
             }
+        },[gameState.value])
 
-        }
-        document.addEventListener('keydown',remoteListener)
-        return () => {
-            document.removeEventListener('keydown',remoteListener)
-        }
-    },[gameState.value])
+        // match effect
+        useEffect(()=>{
+            if(gameState.context.targetNumber===gameState.context.currentNumber)gameStateSend('MATCH')
+        },[gameState.context.currentNumber])
 
-    window.actor = gameState
-    let thing = "thing"
-    // persist high score with window.localStorage 
-    // (window.localstorage.setItem('highScore',highScore),window.localstorage.getItem('highScore'))
-    useEffect(()=>{
-        if(gameState.context.targetNumber===gameState.context.currentNumber)gameStateSend('MATCH')
-      
-    },[gameState])
-    useEffect(()=>{
-
-        if(gameState.context.score > highScore){
-            window.localStorage.setItem('highScore',gameState.context.score)
-            setHighScore(gameState.context.score)
-        }
-    },[gameState.context.score])
+        // high score update effect
+        useEffect(()=>{
+            if(gameState.context.score > highScore){
+                window.localStorage.setItem('highScore',gameState.context.score)
+                setHighScore(gameState.context.score)
+            }
+        },[gameState.context.score])
+    }
 
     return (
         <div>
             <div>Half Double</div>
 
-            {gameState.value === 'starting'&&
-              <div
-              className='countdown'
-          >
-              {gameState.context.countdown}
-          </div>
-            
+            {   gameState.value === 'starting'&&
+                <div
+                    className='countdown'
+                >
+                    {gameState.context.countdown}
+                </div>
             }
-          
-            <div
-            className='numbers'
-            >
+
             {
                 gameState.value==='running'&&
                 <div>
@@ -141,12 +136,8 @@ const Game = () => {
                     </div>
                  
                 </div>
+            } 
 
-
-
-            }  
-              
-            </div>
             {
                 gameState.value==='paused'&&
                 <div>
@@ -171,8 +162,7 @@ const Game = () => {
                     </Button>
                 </div>
             }
-                    
-    
+
             {
                 gameState.value ==='ended'&&
                 <div>

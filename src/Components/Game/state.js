@@ -153,6 +153,5 @@ const gameMachine = createMachine({
         }
     }
 })
-const gameStateInterpreter = interpret(gameMachine)
 
-export {gameMachine,gameStateInterpreter}
+export {gameMachine}
