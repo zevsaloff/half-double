@@ -1,10 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
+import './index.scss';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+// disable scrolling
+// document.body.style.overflow = "hidden";
 document.addEventListener("keydown",(e)=>{
   // console.log(e)
 })

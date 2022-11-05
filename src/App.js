@@ -1,4 +1,4 @@
-import './App.scss';
+import './App.css';
 import './reset.scss'
 import colors from './colors';
 import Menu from './Components/Menu'

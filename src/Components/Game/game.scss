@@ -1,0 +1,23 @@
+// @keyframes buttonclick {
+//     0% {
+//         transform: translateY(0%);
+//     }
+//     50% {
+//         // background-color: #3e8e41;
+//         box-shadow: 0 5px #666;
+//         transform: translateY(4px);
+//     }
+//     100% {
+//         transform: translateY(0%);
+//     }
+// }
+
+#testId {
+    grid-template-areas: 
+    "highscore header header timer"
+    ". score score ."
+    ". currentnumber targetnumber ."
+    ". leftbutton rightbutton pausebutton";
+    align-items: center;
+    justify-items: center;
+}

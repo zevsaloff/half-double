@@ -19,12 +19,12 @@ const gameMachine = createMachine({
         score:0,
         targetNumber:0,
         currentNumber:1,
-        timer:4,
+        timer:99,
     },
     states:{
         starting:{
             entry:[assign({score:0,
-                timer:(c,e)=>5,
+                timer:(c,e)=>60,
                 countdown:(c,e)=>3,
                 currentNumber:(c,e)=>1,
                 targetNumber:(c,e)=>getNewTargetNumber(c)
@@ -65,11 +65,7 @@ const gameMachine = createMachine({
                 }
               }
         },
-        // Write game logic
-        // assign a new number when the correct one is chosen and update the score
-
         running:{
-
             invoke:{
                 id:'game',
                 src: (context) => (callback, onrecieve) => {
@@ -112,7 +108,7 @@ const gameMachine = createMachine({
                     actions:[assign({
                         currentNumber:(context)=>{
                             const newCurrentNumber = context.currentNumber*2
-                            return newCurrentNumber
+                            return (newCurrentNumber > 131072 ? 131072 : newCurrentNumber   ) 
                         }
                     })/* ,send({ type: 'RIGHT' }, { to: 'game' }) */]
                 },

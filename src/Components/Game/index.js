@@ -1,27 +1,36 @@
 import { useMachine,useActor} from '@xstate/react';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {applicationStateInterpreter} from "../../state";
 import { gameMachine } from './state';
-import Button  from '../button/index'
+import Button  from '../button/index';
 import colors from '../../colors';
+import './game.scss'
 
 
 const Game = () => {
     const [highScore,setHighScore] = useState(window.localStorage.getItem('highScore'))
     const [applicationState,applicationStateSend] = useActor(applicationStateInterpreter)
     const [gameState,gameStateSend] = useMachine(gameMachine)
+    const rightButtonRef = useRef(null)
+    const leftButtonRef = useRef(null)
+    const pauseButtonRef = useRef(null)
     window.actor = gameState
 
     // effects
     {
         // Remote event effect
         useEffect(()=>{
+            console.log(rightButtonRef)
             const remoteListener = (e)=>{
                 // game state values: starting, running, paused, ended
                 // e.key === 'ArrowLeft','ArrowRight','MediaPlayPause'
-                console.log(gameState.value)
                 if(gameState.value === 'running'||'paused'){
-                    gameStateSend({type:e.key})
+                    window.rightButton = rightButtonRef.current
+                    // send arrows or pause event to state if in running or paused state
+                    if(e.key==='ArrowRight')rightButtonRef.current.click()
+                    if(e.key==='ArrowLeft')leftButtonRef.current.click()
+                    if(e.key==='MediaPlayPause'|| e.key === " ")pauseButtonRef.current.click()
+                    // enable button focus from fire tv remote
                     if(gameState.value==='running')e.preventDefault()
                 }
                 if (gameState.value === 'ended'){
@@ -48,111 +57,231 @@ const Game = () => {
         },[gameState.context.score])
     }
 
+    // send click events to buttons
+    {
+         // game state values: starting, running, paused, ended
+        // e.key === 'ArrowLeft','ArrowRight','MediaPlayPause'
+        const inputListener = (e) => {
+
+        }
+        document.addEventListener('keydown',inputListener)
+    }
+
     return (
-        <div>
-            <div>Half Double</div>
+        <div
+            id="gameContainer"
+            style={{
+                    width:"100%",
+                    height:'100%',
+                    display:'flex',
+                    flexFlow:'column'
+            }}
+        >
+            <div
+                style={{
+                    fontFamily: `'Monofett', cursive`,
+                    fontSize: '5vmin'
+                }}
+            >
+                Half<br/>Double
+            </div>
 
             {   gameState.value === 'starting'&&
                 <div
-                    className='countdown'
+                    className='countdownContainer'
+                    style={{
+                        display:'grid',
+                        width:'100%',
+                        height:'100%',
+                        // gridAutoColumns:'1fr',
+                        // gridAutoRows:'1fr',
+                        // . for an empty section
+                        gridTemplateAreas: `
+                            '. countdown countdown .'
+                        `,
+                        alignItems:'center',
+                        justifyItems:'center',
+                        gridAutoColumns:'1fr',
+                        gridAutoRows:'1fr',
+                        fontFamily: `'Press Start 2P', cursive`,
+                    }}
                 >
-                    {gameState.context.countdown}
+                    <div
+                        style={{
+                            gridArea:'countdown',
+                            background:'white',
+                            padding:'2vmin',
+                            width:'min-content'
+                        }}
+                    >
+                        {gameState.context.countdown}
+
+                    </div>
+
                 </div>
             }
 
             {
                 gameState.value==='running'&&
-                <div>
+                <div
+                id='testId'
+                    style={{
+                        display:'grid',
+                        width:'100%',
+                        height:'100%',
+                        // fontFamily:`'Orbitron', sans-serif`,
+                        fontFamily: `'Press Start 2P', cursive`,
+                        // gridAutoColumns:'1fr',
+                        // gridAutoRows:'1fr',
+                        // . for an empty section
+                        gridTemplateAreas: `
+                            'highscore header timer'
+                            '. score score .'
+                            '. currentnumber targetnumber .'
+                            '. leftbutton rightbutton pausebutton'
+                        `,
+                        gridAutoColumns:'1fr',
+                        gridAutoRows:'1fr',
+                    }}
+                >
                     <div
                         className='highScore'
+                        style={{
+                            gridArea:'highscore',
+                            background:"white",
+                            padding:'2vmin',
+                            width:'min-content'
+                        }}
                     >
-                        High Score {highScore}
+                        High Score<br/><br/> {highScore}
                     </div>
                     <div
                     className="timer"
                     style={{
-                        background:"white"
+                        background:"white",
+                        gridArea:'timer',
+                        padding:'2vmin',
+                        width:'min-content'
                     }}
                     >
-                        Timer
+                        Timer 
+                        <br/><br/>
                         {gameState.context.timer}
                     </div>
                     <div
                         className="score"
                         style={{
-                            background:"white"
+                            background:"white",
+                            gridArea:'score',
+                            padding:'2vmin',
+                            width:'min-content'
                         }}
                     >
-                        Score
+                        Score<br/><br/>
                         {gameState.context.score}
                     </div>
                     <div
                         className='targetNumber'
                         style={{
-                            background:"white"
+                            background:"white",
+                            gridArea:'targetnumber',
+                            padding:'2vmin',
+                            width:'min-content'
                         }}
                     >
-                        Target Number
+                        Target Number<br/><br/>
                         {gameState.context.targetNumber}
                     </div>
                     <div
                         className='currentNumber'
                         style={{
-                            background:"white"
+                            background:"white",
+                            gridArea:'currentnumber',
+                            padding:'2vmin',
+                            width:'min-content'
                         }}
 
                     >
-                        Current Number
+                        Current Number <br/><br/>
                         {gameState.context.currentNumber}
                     </div>
-                    <div
-                        className='controls'
-                    >
                         <Button
+                            ref={leftButtonRef}
                             name="Left Button"
+                            className="controllButton"
                             text="<"
-                            size={{width:"5vmax",height:'3vmax'}}
+                            size={{width:"50%",height:'30%'}}
                             color={colors.sg}
                             handleClick={()=>gameStateSend({type:'ArrowLeft'})}
+                            style={{
+                                gridArea:'leftbutton'
+                            }}
                         >
                         </Button>
-
                         <Button
+                            ref={rightButtonRef}
                             name="Right Button"
+                            className="controllButton"
                             text=">"
-                            size={{width:"5vmax",height:'3vmax'}}
+                            size={{width:"50%",height:'30%'}}
                             color={colors.sg}
                             handleClick={()=>gameStateSend({type:'ArrowRight'})}
+                            style={{
+                                gridArea:'rightbutton'
+                            }}
                         >
                         </Button>
                         <Button
+                            ref={pauseButtonRef}
                             name="Pause Button"
                             text="Pause"
                             size={{width:"min-content",height:'3vmax'}}
                             color={colors.sg}
                             handleClick={()=>gameStateSend({type:'MediaPlayPause'})}
+                            style={{
+                                gridArea:'pausebutton'
+                            }}
                         >
                         </Button>
-                    </div>
-                 
                 </div>
             } 
 
             {
                 gameState.value==='paused'&&
-                <div>
+                <div
+                    id="pausedScreen"
+                    style={{
+                        display:'grid',
+                        width:'100%',
+                        height:'100%',
+                        gridTemplateAreas: `
+                            '. resumebutton exitbutton .'
+                        `,
+                        alignItems:'center',
+                        justifyItems:'center',
+                        gridAutoColumns:'1fr',
+                        gridAutoRows:'1fr',
+                    }}
+                >
                      <Button
-                            name="Resume Button"
-                            text="Resume"
-                            size={{width:"min-content",height:'3vmax'}}
-                            color={colors.sg}
-                            handleClick={()=>gameStateSend({type:"MediaPlayPause"})}
+                        ref={pauseButtonRef}
+                        name="Resume Button"
+                        text="Resume"
+                        size={{width:"min-content",height:'3vmax'}}
+                        style={{
+                            gridArea:'resumebutton'
+                        }}
+                        color={colors.sg}
+                        handleClick={()=>gameStateSend({type:"MediaPlayPause"})}
                         >
                     </Button>
                     <Button
                             name="Exit Button"
                             text="Exit"
                             size={{width:"min-content",height:'3vmax'}}
+                            style={{
+                                gridArea:'exitbutton'
+                            }}
                             color={colors.sg}
                             handleClick={()=>{
                                 gameStateSend({type:'EXIT'})
@@ -165,25 +294,54 @@ const Game = () => {
 
             {
                 gameState.value ==='ended'&&
-                <div>
+                <div
+
+                    style={{
+                        display:'grid',
+                        gridTemplateAreas:`
+                            '. score highscore .'
+                            '. newgame exit .'
+                        `,
+                        alignItems:'center',
+                        justifyItems:'center',
+                        width:'100%',
+                        height:'100%',
+                        gridAutoColumns:'1fr',
+                        gridAutoRows:'1fr',
+                        fontFamily: `'Press Start 2P', cursive`,
+                    }}
+                >
                     <div
                         className="score"
                         style={{
-                            background:"white"
+                            gridArea:'score',
+                            background:"white",
+                            padding:'2vmin',
+                            width:'min-content'
                         }}
                     >
                         Score
+                        <br/><br/>
                         {gameState.context.score}
                     </div>
                     <div
                         className='highScore'
+                        style={{
+                            gridArea:'highscore',
+                            background:"white",
+                            padding:'2vmin',
+                            width:'min-content'
+                        }}
                     >
-                        High Score {highScore}
+                        High Score<br/><br/> {highScore}
                     </div>          
                     <Button
                             name="New Game Button"
                             text="New Game"
                             size={{width:"min-content",height:'min-content'}}
+                            style={{
+                                gridArea:'newgame'
+                            }}
                             color={colors.sg}
                             handleClick={()=>gameStateSend({type:'NEW_GAME'})}
                         >
@@ -192,6 +350,10 @@ const Game = () => {
                             name="Exit Button"
                             text="Exit"
                             size={{width:"5vmax",height:'3vmax'}}
+                            style={{
+                                gridArea:'exit'
+
+                            }}
                             color={colors.sg}
                             handleClick={()=>{
                                 gameStateSend({type:'EXIT'})
