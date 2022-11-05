@@ -4,7 +4,7 @@
   "private": true,
   "homepage": "https://zevysaloff.github.io/half-double",
   "engines": {
-    "node": "16.x"
+    "node": "18.x"
   },
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
