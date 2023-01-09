@@ -4,7 +4,7 @@ import { createMachine, interpret,assign } from 'xstate';
 import { send } from 'xstate/lib/actions'
 
 const getNewTargetNumber = (context)=>{
-    let numbers = [1,2,4,8,16,32,64,128,256,512,1024,2048,4096,8192,16384,32768,65536,131072]
+    let numbers = [2,4,8,16,32,64,128,256,512,1024,2048,4096,8192,16384,32768,65536,131072]
     numbers.splice(context.currentNumber,1)
     const randomNumber = numbers[Math.floor(Math.random() * numbers.length)]
     return randomNumber
@@ -18,7 +18,7 @@ const gameMachine = createMachine({
         countdown:3,
         score:0,
         targetNumber:0,
-        currentNumber:1,
+        currentNumber:2,
         timer:99,
     },
     states:{
@@ -115,7 +115,7 @@ const gameMachine = createMachine({
                 ArrowLeft:{
                     actions:[assign({
                         currentNumber:(context)=>{
-                            const newCurrentNumber = context.currentNumber === 1? 1:context.currentNumber/2
+                            const newCurrentNumber = context.currentNumber === 2? 2 :context.currentNumber/2
                             return newCurrentNumber
                         }
                     })/* ,send({ type: 'LEFT' }, { to: 'game' }) */]
