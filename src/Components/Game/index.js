@@ -21,32 +21,37 @@ const Game = () => {
         // Link specific keydown events to the button mousedown
         // Remote event effect
         useEffect(()=>{
-            console.log(rightButtonRef)
+
             const remoteListener = (e)=>{
                 // game state values: starting, running, paused, ended
                 // e.key === 'ArrowLeft','ArrowRight','MediaPlayPause'
-                if(gameState.value === 'running'||'paused'){
+                console.log("keydown event")
+        
+                if(gameState.value === 'running' & !e.repeat){
+                    e.preventDefault()
                     window.rightButton = rightButtonRef.current
-                    // send arrows or pause event to state if in running or paused state
-                    if(e.key==='ArrowRight')rightButtonRef.current.click().focus()
-                    if(e.key==='ArrowLeft')leftButtonRef.current.click().focus()
+                    // send arrows event to state if in running state
+                    if(e.key==='ArrowRight')rightButtonRef.current.click()
+                    if(e.key==='ArrowLeft')leftButtonRef.current.click()
                     if(e.key==='MediaPlayPause'|| e.key === " ")pauseButtonRef.current.click()
+
                     // enable button focus from fire tv remote
-                    if(gameState.value==='running')e.preventDefault()
+                }
+                if(gameState.value === 'paused'){
+                    if(e.key==='MediaPlayPause'|| e.key === " ")pauseButtonRef.current.click()
                 }
                 if (gameState.value === 'ended'){
                     document.removeEventListener('keydown',remoteListener)
                 }
             }
+            
             document.addEventListener('keydown',remoteListener)
-            document.addEventListener('keyup',remoteListener)
 
             return () => {
                 document.removeEventListener('keydown',remoteListener)
-                document.removeEventListener('keyup',remoteListener)
 
             }
-        },[gameState.value])
+        })
 
         // match effect
         useEffect(()=>{

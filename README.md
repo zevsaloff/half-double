@@ -20,3 +20,6 @@ Match your current number with the target number as many times as you can before
 
 ## [Click Here to Launch The Game](https://zevsaloff.github.io/half-double/)
 
+
+# Developer notes
+deploy to github pages with "yarn deploy"
