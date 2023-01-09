@@ -5,7 +5,8 @@ import { send } from 'xstate/lib/actions'
 
 const getNewTargetNumber = (context)=>{
     let numbers = [2,4,8,16,32,64,128,256,512,1024,2048,4096,8192,16384,32768,65536,131072]
-    numbers.splice(context.currentNumber,1)
+    numbers.splice(numbers.indexOf(context.currentNumber),1)
+    console.log(numbers)
     const randomNumber = numbers[Math.floor(Math.random() * numbers.length)]
     return randomNumber
 }
