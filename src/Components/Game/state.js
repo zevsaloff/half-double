@@ -26,7 +26,7 @@ const gameMachine = createMachine({
             entry:[assign({score:0,
                 timer:(c,e)=>60,
                 countdown:(c,e)=>3,
-                currentNumber:(c,e)=>1,
+                currentNumber:(c,e)=>2,
                 targetNumber:(c,e)=>getNewTargetNumber(c)
             },
                 )],
