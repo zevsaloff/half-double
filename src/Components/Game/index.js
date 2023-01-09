@@ -25,8 +25,7 @@ const Game = () => {
             const remoteListener = (e)=>{
                 // game state values: starting, running, paused, ended
                 // e.key === 'ArrowLeft','ArrowRight','MediaPlayPause'
-                console.log("keydown event")
-        
+
                 if(gameState.value === 'running' & !e.repeat){
                     e.preventDefault()
                     window.rightButton = rightButtonRef.current
@@ -34,7 +33,6 @@ const Game = () => {
                     if(e.key==='ArrowRight')rightButtonRef.current.click()
                     if(e.key==='ArrowLeft')leftButtonRef.current.click()
                     if(e.key==='MediaPlayPause'|| e.key === " ")pauseButtonRef.current.click()
-
                     // enable button focus from fire tv remote
                 }
                 if(gameState.value === 'paused'){
