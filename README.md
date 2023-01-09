@@ -22,4 +22,6 @@ Match your current number with the target number as many times as you can before
 
 
 # Developer notes
-deploy to github pages with "yarn deploy"
+
+To deploy to github: "yarn build, git commit -m "commit message", git push origin master"
+To deploy to github pages: "yarn deploy"
