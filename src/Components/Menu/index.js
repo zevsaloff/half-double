@@ -53,6 +53,10 @@ const Menu = () => {
             >
                 Menu
             </div>
+            <button
+                        accesskey='l'
+                        onClick={console.log('hello')}
+                    >Hello</button>
             <div
             className='highScore'
             style={{

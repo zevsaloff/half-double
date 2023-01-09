@@ -18,6 +18,7 @@ const Game = () => {
 
     // effects
     {
+        // Link specific keydown events to the button mousedown
         // Remote event effect
         useEffect(()=>{
             console.log(rightButtonRef)
@@ -27,8 +28,8 @@ const Game = () => {
                 if(gameState.value === 'running'||'paused'){
                     window.rightButton = rightButtonRef.current
                     // send arrows or pause event to state if in running or paused state
-                    if(e.key==='ArrowRight')rightButtonRef.current.click()
-                    if(e.key==='ArrowLeft')leftButtonRef.current.click()
+                    if(e.key==='ArrowRight')rightButtonRef.current.click().focus()
+                    if(e.key==='ArrowLeft')leftButtonRef.current.click().focus()
                     if(e.key==='MediaPlayPause'|| e.key === " ")pauseButtonRef.current.click()
                     // enable button focus from fire tv remote
                     if(gameState.value==='running')e.preventDefault()
@@ -38,8 +39,12 @@ const Game = () => {
                 }
             }
             document.addEventListener('keydown',remoteListener)
+            document.addEventListener('keyup',remoteListener)
+
             return () => {
                 document.removeEventListener('keydown',remoteListener)
+                document.removeEventListener('keyup',remoteListener)
+
             }
         },[gameState.value])
 
@@ -205,11 +210,13 @@ const Game = () => {
                         Current Number <br/><br/>
                         {gameState.context.currentNumber}
                     </div>
+                   
                         <Button
                             ref={leftButtonRef}
                             name="Left Button"
                             className="controllButton"
                             text="<"
+                            accesskey="ArrowLeft"
                             size={{width:"50%",height:'30%'}}
                             color={colors.sg}
                             handleClick={()=>gameStateSend({type:'ArrowLeft'})}
@@ -223,6 +230,7 @@ const Game = () => {
                             name="Right Button"
                             className="controllButton"
                             text=">"
+                            accesskey="ArrowRight"
                             size={{width:"50%",height:'30%'}}
                             color={colors.sg}
                             handleClick={()=>gameStateSend({type:'ArrowRight'})}

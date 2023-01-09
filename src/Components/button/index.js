@@ -1,5 +1,6 @@
 
 import { forwardRef, useRef } from "react"
+import './button.scss'
 
 
 
@@ -9,50 +10,47 @@ const Button = forwardRef((props,ref) => {
     buttonRef = ref ? ref : buttonRef
     // add hover state and animation?
     const  onClick = () =>{
-        const clickAnimation = [
-            [ 
-              
-                {
-                    borderLeftColor: "white",
-                    borderTopColor: "white",
-                    borderBottomColor: "dimgrey",
-                    borderRightColor: "dimgrey",
-                    boxShadow: "2px 2px 0px 0px rgba(0,0,0,0.75)"
-                },
-                {
-                    borderLeftColor: "dimgrey",
-                    borderTopColor: "dimgrey",
-                    borderBottomColor: "white",
-                    borderRightColor: "white",
-                    boxShadow: "0px 0px 0px 0px rgba(0,0,0,0.75)"
-                },
-                {
-                    borderLeftColor: "white",
-                    borderTopColor: "white",
-                    borderBottomColor: "dimgrey",
-                    borderRightColor: "dimgrey",
-                    boxShadow: "2px 2px 0px 0px rgba(0,0,0,0.75)"
-                }
-            ],
-            200
-        ]
-        buttonRef.current.animate(...clickAnimation,15)
+        {
+            //  No longer animating buttons so not needed fgor this but good code if an animation is needed
+            // const clickAnimation = [
+            //     [ 
+                  
+            //         {
+            //             borderLeftColor: "white",
+            //             borderTopColor: "white",
+            //             borderBottomColor: "dimgrey",
+            //             borderRightColor: "dimgrey",
+            //             boxShadow: "2px 2px 0px 0px rgba(0,0,0,0.75)"
+            //         },
+            //         {
+            //             borderLeftColor: "dimgrey",
+            //             borderTopColor: "dimgrey",
+            //             borderBottomColor: "white",
+            //             borderRightColor: "white",
+            //             boxShadow: "0px 0px 0px 0px rgba(0,0,0,0.75)"
+            //         },
+            //         {
+            //             borderLeftColor: "white",
+            //             borderTopColor: "white",
+            //             borderBottomColor: "dimgrey",
+            //             borderRightColor: "dimgrey",
+            //             boxShadow: "2px 2px 0px 0px rgba(0,0,0,0.75)"
+            //         }
+            //     ],
+            //     200
+            // ]
+            // buttonRef.current.animate(...clickAnimation,15)
+        }
         handleClick()
      }
      return(
      <div
+
         //  make focusable
         tabIndex={0}
         ref={buttonRef}
-        className={className}
+        className={className+' button'}
         style={{
-            borderStyle: "solid",
-            borderWidth: "4px",
-            borderLeftColor: "white",
-            borderTopColor: "white",
-            borderBottomColor: "dimgrey",
-            borderRightColor: "dimgrey",
-            boxShadow: "2px 2px 0px 0px rgba(0,0,0,0.75)",
             background: color,
             // remove size prop?
             // ...size,
