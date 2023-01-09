@@ -12,7 +12,6 @@ const Menu = () => {
 
     const newGameSelected=()=>{
         applicationStateSend({type:'NEW_GAME'})
-        console.log('new game selected')
     }
     return (
         <div
